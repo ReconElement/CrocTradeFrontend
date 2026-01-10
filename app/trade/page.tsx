@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Ca
 import { TradeForm } from '@/components/TradeForm';
 import { TradeCard } from '@/components/TradeCard';
 import { LiquidateModal } from '@/components/LiquidateModal';
+import { TradingChart } from '@/components/TradingChart';
 import type { Trade, Asset } from '@/lib/types';
 
 export default function TradePage() {
@@ -105,6 +106,11 @@ export default function TradePage() {
             </div>
           </div>
         </Card>
+
+        {/* Price Chart */}
+        <div className="mb-8">
+          <TradingChart />
+        </div>
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
