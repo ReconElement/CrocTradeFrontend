@@ -55,8 +55,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
-    // Clear user state - cookie will be handled server-side or expired
+    // Clear user state
     setUser(null);
+    
+    // Clear all auth-related cookies by setting them to expire in the past
+    const cookiesToClear = ['token', 'auth_token', 'session', 'jwt', 'access_token', 'refresh_token'];
+    const domains = [window.location.hostname, `.${window.location.hostname}`, ''];
+    const paths = ['/', ''];
+    
+    cookiesToClear.forEach((cookieName) => {
+      // Try clearing with different domain/path combinations
+      domains.forEach((domain) => {
+        paths.forEach((path) => {
+          let cookieString = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+          if (path) cookieString += `; path=${path}`;
+          if (domain) cookieString += `; domain=${domain}`;
+          document.cookie = cookieString;
+        });
+      });
+    });
+    
+    // Also clear any cookie that contains common auth patterns
+    document.cookie.split(';').forEach((cookie) => {
+      const cookieName = cookie.split('=')[0].trim();
+      if (cookieName) {
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      }
+    });
+    
     // Redirect to home
     window.location.href = '/';
   };
