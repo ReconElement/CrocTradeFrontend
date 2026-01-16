@@ -10,7 +10,7 @@ import type {
     SupportedAssetsResponse,
 } from './types';
 
-const API_BASE = 'http://localhost:4000/api/v1';
+const API_BASE = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
 
 class ApiError extends Error {
     constructor(public status: number, message: string) {
